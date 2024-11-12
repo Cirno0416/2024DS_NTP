@@ -31,7 +31,7 @@ public class NTP_Client {
         long lMinute;
         long lSecond;
         long lMilliSecond;
-        long lUninTimeMIlli;
+        long lUnixTimeMilli;
 
         NTP_Timestamp_Data() {
             eResultCode = NTP_Client_ResultCode.NTP_ServerAddressNotSet; // Use as default for construction (gets overwritten)
@@ -40,7 +40,7 @@ public class NTP_Client {
             lSecond = 0;
             lMilliSecond = 0;
             lUnixTime = 0;
-            lUninTimeMIlli = 0;
+            lUnixTimeMilli = 0;
         }
     }
 
@@ -189,7 +189,7 @@ public class NTP_Client {
         DatagramPacket RecvPacket = new DatagramPacket(bRecvBuf, NTP_PACKET_SIZE);
         try {
             m_TimeService_Socket.receive(RecvPacket);
-            //Reference Timestamp(T4)
+            // Reference Timestamp(T4)
             t4 = System.currentTimeMillis();
         } catch (Exception ex) {
             NTP_Timestamp.lUnixTime = 0; // Signal that an error occurred
@@ -198,23 +198,27 @@ public class NTP_Client {
 
         if (0 < RecvPacket.getLength()) {
             // Receive Timestamp(T2)
-            long t2_second = (((long) bRecvBuf[32] & 0xFF) << 24) + (((long) bRecvBuf[33] & 0xFF) << 16) + (((long) bRecvBuf[34] & 0xFF) << 8) + ((long) bRecvBuf[35] & 0xFF);
-            long t2_milli = ((((long) bRecvBuf[36] & 0xFFL) << 24) + (((long) bRecvBuf[37] & 0xFFL) << 16) + (((long) bRecvBuf[38] & 0xFFL) << 8) + ((long) bRecvBuf[39] & 0xFFL)) * 1000L / 0x100000000L;
+            long t2_second = (((long) bRecvBuf[32] & 0xFF) << 24) + (((long) bRecvBuf[33] & 0xFF) << 16)
+                    + (((long) bRecvBuf[34] & 0xFF) << 8) + ((long) bRecvBuf[35] & 0xFF);
+            long t2_milli = ((((long) bRecvBuf[36] & 0xFFL) << 24) + (((long) bRecvBuf[37] & 0xFFL) << 16)
+                    + (((long) bRecvBuf[38] & 0xFFL) << 8) + ((long) bRecvBuf[39] & 0xFFL)) * 1000L / 0x100000000L;
             long t2 = t2_second * 1000 + t2_milli;
+
             // Transmit Timestamp(T3)
-            long t3_second = (((long) bRecvBuf[40] & 0xFF) << 24) + (((long) bRecvBuf[41] & 0xFF) << 16) + (((long) bRecvBuf[42] & 0xFF) << 8) + ((long) bRecvBuf[43] & 0xFF);
-            long t3_milli = ((((long) bRecvBuf[44] & 0xFFL) << 24) + (((long) bRecvBuf[45] & 0xFFL) << 16) + (((long) bRecvBuf[46] & 0xFFL) << 8) + ((long) bRecvBuf[47] & 0xFFL)) * 1000L / 0x100000000L;
+            long t3_second = (((long) bRecvBuf[40] & 0xFF) << 24) + (((long) bRecvBuf[41] & 0xFF) << 16)
+                    + (((long) bRecvBuf[42] & 0xFF) << 8) + ((long) bRecvBuf[43] & 0xFF);
+            long t3_milli = ((((long) bRecvBuf[44] & 0xFFL) << 24) + (((long) bRecvBuf[45] & 0xFFL) << 16)
+                    + (((long) bRecvBuf[46] & 0xFFL) << 8) + ((long) bRecvBuf[47] & 0xFFL)) * 1000L / 0x100000000L;
             long t3 = t3_second * 1000 + t3_milli;
 
-            long offset = ((t2 - t1) + (t3 - t4)) / 2;//毫秒为单位
+            long offset = ((t2 - t1) + (t3 - t4)) / 2; // MilliSecond as a unit
             long now = System.currentTimeMillis();
-            NTP_Timestamp.lUninTimeMIlli = (now + offset) - SeventyYears * 1000L;//毫秒版时间戳
+            NTP_Timestamp.lUnixTimeMilli = (now + offset) - SeventyYears * 1000L; // MilliSecond as a unit
             NTP_Timestamp.lUnixTime = (now + offset) / 1000L - SeventyYears;
             NTP_Timestamp.lHour = (long) (NTP_Timestamp.lUnixTime % 86400L) / 3600;
             NTP_Timestamp.lMinute = (long) (NTP_Timestamp.lUnixTime % 3600) / 60;
             NTP_Timestamp.lSecond = (long) NTP_Timestamp.lUnixTime % 60;
             NTP_Timestamp.lMilliSecond = (now + offset) % 1000L;
-
         } else {
             NTP_Timestamp.lUnixTime = 0; // Signal that an error occurred
         }
