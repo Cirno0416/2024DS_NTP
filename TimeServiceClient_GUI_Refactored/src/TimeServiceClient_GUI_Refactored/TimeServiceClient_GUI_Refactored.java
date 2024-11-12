@@ -19,6 +19,11 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
     NTP_Client m_NTP_Client;
     int m_iNumRequestsSent; // Used to count the number of NTP requests sent
     int m_iNumResponsesReceived; // Used to count the number of NTP requests received
+    int m_iNumInvalidURl; // The number of invalid urls
+    int m_iNumResponsesFailed;  // The times of failed response of cuurent url
+    // the max times of retrying to send request to current url
+    // Set a value casually
+    final int MAX_FAILED_REQUEST_NUM = 3;
     Timer m_Timer_SendNTPRequests; // Used to send NTP requests at regular intervals
     DefaultListModel m_listModel_NTPServerList; // For use with JList
     DefaultListModel m_listModel_LocationList; // For use with JList
@@ -33,6 +38,7 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
             jTextField_UNIX_Time.setText("");
             jTextField_UTC_Time.setText("");
             m_iNumRequestsSent = 0;
+            m_iNumResponsesFailed = 0;
             m_iNumResponsesReceived = 0;
             UpdateStatisticsDisplay();
         };
@@ -64,6 +70,7 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
         jTextField_UTC_Time.setEnabled(false);
         jTextField_NumRequestsSent.setEnabled(false);
         jTextField_NumResponsesReceived.setEnabled(false);
+        jTextField_NumResponsesFailed.setEnabled(false);
         jList_NTPServerURLs.setEnabled(true);
         JScrollPane_NTPServerURLs.setEnabled(true);
         jList_NTPServerLocations.setEnabled(false);
@@ -101,15 +108,50 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
                     UpdateStatisticsDisplay();
                     break;
                 case NTP_ServerAddressNotSet:
+                    // Only try once at this situation
+                    m_iNumInvalidURl++;
+                    if (Check_Invalid_Server_Number()) break;
+                    Change_NTP_Server();
+                    UpdateStatisticsDisplay();
                     break;
-                case NTP_SendFailed:
-                    break;
-                case NTP_ReceiveFailed:
+                case NTP_ReceiveFailed, NTP_SendFailed:
                     m_iNumRequestsSent++;
+                    m_iNumResponsesFailed++;
+                    if (m_iNumResponsesFailed > MAX_FAILED_REQUEST_NUM) {
+                        // set this url to invalid one
+                        m_iNumInvalidURl++;
+                        if (Check_Invalid_Server_Number()) break;
+                        Change_NTP_Server();
+                    }
                     UpdateStatisticsDisplay();
                     break;
             }
         }
+    }
+
+    private boolean Check_Invalid_Server_Number() {
+        if (m_iNumInvalidURl >= m_listModel_NTPServerList.getSize()) {
+            // all invalid
+            JOptionPane.showMessageDialog(jOptionPane_Warning, "All NTP servers invalid.", "Warning", JOptionPane.WARNING_MESSAGE);
+            jButton_StartNTPClient.setText("START NTP requests");
+            jList_NTPServerURLs.setEnabled(true);
+            m_NTP_Client.Set_ClientStarted_Flag(false);
+            StopTimer();
+            return true;
+        }
+        return false;
+    }
+
+    private void Change_NTP_Server() {
+        int index = jList_NTPServerURLs.getSelectedIndex();
+        String url = jList_NTPServerURLs.getSelectedValue().toString();
+        String location = jList_NTPServerLocations.getSelectedValue().toString();
+        m_listModel_NTPServerList.remove(index);
+        m_listModel_LocationList.remove(index);
+        m_listModel_NTPServerList.addElement(url);
+        m_listModel_LocationList.addElement(location);
+        jList_NTPServerURLs.setSelectedIndex(0);
+        jList_NTPServerLocations.setSelectedIndex(0);
     }
 
     /**
@@ -149,7 +191,14 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
     }
 
     private void Get_ServerURL_listBox_Selection() {
-        String sSelectedURL = jList_NTPServerURLs.getSelectedValue().toString();
+        // The value of this box might be null
+        String sSelectedURL;
+        if (jList_NTPServerURLs.getSelectedValue() == null) {
+//            System.out.println("Error: Value of a url is null");
+            sSelectedURL = "INVALID.NULL.URL";
+        } else {
+            sSelectedURL = jList_NTPServerURLs.getSelectedValue().toString();
+        }
         jTextField_URL.setText(sSelectedURL);
         SetUp_TimeService_AddressStruct(sSelectedURL);
     }
@@ -168,6 +217,7 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
     void UpdateStatisticsDisplay() {
         jTextField_NumRequestsSent.setText(Integer.toString(m_iNumRequestsSent));
         jTextField_NumResponsesReceived.setText(Integer.toString(m_iNumResponsesReceived));
+        jTextField_NumResponsesFailed.setText(Integer.toString(m_iNumResponsesFailed));
     }
 
     void StopTimer() {
@@ -210,6 +260,8 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
                 jList_NTPServerURLs.setEnabled(false);
                 m_iNumRequestsSent = 0;
                 m_iNumResponsesReceived = 0;
+                m_iNumInvalidURl = 0;
+                m_iNumResponsesFailed = 0;
                 UpdateStatisticsDisplay();
                 Start_Timer_SendNTPRequests();
                 m_NTP_Client.Set_ClientStarted_Flag(true);
@@ -238,6 +290,8 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
     private JTextField jTextField_NumRequestsSent;
     private JLabel jLabel_NumResponsesReceived;
     private JTextField jTextField_NumResponsesReceived;
+    private JLabel jLabel_NumResponsesFailed;
+    private JTextField jTextField_NumResponsesFailed;
     private JPanel jPanel_NTPServerSelection;
     private JLabel jLabel_NIST_Servers;
     private JLabel jLabel_NTPServerURLs;
@@ -249,6 +303,7 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
     private JPanel jPanel_Controls;
     private JButton jButton_StartNTPClient;
     private JButton jButton_Done;
+    private JOptionPane jOptionPane_Warning;
 
     private void initComponents() {
         jLabel_URL = new JLabel();
@@ -301,6 +356,7 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
                         .add(jLabel_ServerIPAddress)
                         .add(jTextField_ServerIPAddress))));
 
+        jOptionPane_Warning = new JOptionPane();
         jLabel_UNIX_Time = new JLabel();
         jLabel_UNIX_Time.setText("UNIX time");
         jTextField_UNIX_Time = new JTextField();
@@ -321,6 +377,10 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
         jTextField_NumResponsesReceived = new JTextField();
         jTextField_NumResponsesReceived.setMaximumSize(new Dimension(60, 4));
         jTextField_NumResponsesReceived.setHorizontalAlignment(JTextField.CENTER);
+        jLabel_NumResponsesFailed = new JLabel("Number of NTP time responses failed");
+        jTextField_NumResponsesFailed = new JTextField();
+        jTextField_NumResponsesFailed.setMaximumSize(new Dimension(60, 4));
+        jTextField_NumResponsesFailed.setHorizontalAlignment(JTextField.CENTER);
 
         jPanel_Time_Status = new JPanel();
         jPanel_Time_Status.setPreferredSize(new Dimension(400, 300));
@@ -340,7 +400,9 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
                 .add(jLabel_NumRequestsSent)
                 .add(jTextField_NumRequestsSent)
                 .add(jLabel_NumResponsesReceived)
-                .add(jTextField_NumResponsesReceived));
+                .add(jTextField_NumResponsesReceived)
+                .add(jLabel_NumResponsesFailed)
+                .add(jTextField_NumResponsesFailed));
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.CENTER)
                 .add(jPanel2Layout.createSequentialGroup()
@@ -356,7 +418,10 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
                     .add(jTextField_NumRequestsSent)
                     .addContainerGap(20, 20)
                     .add(jLabel_NumResponsesReceived)
-                    .add(jTextField_NumResponsesReceived)));
+                    .add(jTextField_NumResponsesReceived)
+                    .addContainerGap(20, 20)
+                    .add(jLabel_NumResponsesFailed)
+                    .add(jTextField_NumResponsesFailed)));
 
         jLabel_NIST_Servers = new JLabel();
         jLabel_NIST_Servers.setText("A selection of NIST servers are provided (availability may change over time)");

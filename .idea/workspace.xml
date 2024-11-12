@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="63614d1f-a52a-4013-bb2e-1d046123bf0b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/TimeServiceClient_GUI_Refactored.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/TimeServiceClient_GUI_Refactored2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/TimeServiceClient_GUI_Refactored3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/swing_layout_1_0_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/swing_layout_1_0_4__2_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/out/production/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored/NTP_Client$NTP_Client_ResultCode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/out/production/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored/NTP_Client$NTP_Timestamp_Data.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/out/production/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored/NTP_Client.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/out/production/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/out/production/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored$Get_NTP_Timestamp.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/out/production/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/src/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored.java" beforeDir="false" afterPath="$PROJECT_DIR$/TimeServiceClient_GUI_Refactored/src/TimeServiceClient_GUI_Refactored/TimeServiceClient_GUI_Refactored.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2okBOW34WtJiHycjRD1saJ4luqR" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "dev",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/dev/2024DS_NTP/TimeServiceClient_GUI_Refactored",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="63614d1f-a52a-4013-bb2e-1d046123bf0b" name="Changes" comment="" />
+      <created>1731403661630</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731403661630</updated>
+      <workItem from="1731403662682" duration="30000" />
+      <workItem from="1731412124944" duration="8000" />
+      <workItem from="1731412160577" duration="42000" />
+      <workItem from="1731412218882" duration="81000" />
+      <workItem from="1731412308668" duration="50000" />
+      <workItem from="1731412413860" duration="89000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
