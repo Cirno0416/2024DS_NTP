@@ -197,18 +197,14 @@ public class NTP_Client {
         }
 
         if (0 < RecvPacket.getLength()) {
-            //Receive Timestamp(T2)
+            // Receive Timestamp(T2)
             long t2_second = (((long) bRecvBuf[32] & 0xFF) << 24) + (((long) bRecvBuf[33] & 0xFF) << 16) + (((long) bRecvBuf[34] & 0xFF) << 8) + ((long) bRecvBuf[35] & 0xFF);
             long t2_milli = ((((long) bRecvBuf[36] & 0xFFL) << 24) + (((long) bRecvBuf[37] & 0xFFL) << 16) + (((long) bRecvBuf[38] & 0xFFL) << 8) + ((long) bRecvBuf[39] & 0xFFL)) * 1000L / 0x100000000L;
             long t2 = t2_second * 1000 + t2_milli;
-            //Transmit Timestamp(T3)
+            // Transmit Timestamp(T3)
             long t3_second = (((long) bRecvBuf[40] & 0xFF) << 24) + (((long) bRecvBuf[41] & 0xFF) << 16) + (((long) bRecvBuf[42] & 0xFF) << 8) + ((long) bRecvBuf[43] & 0xFF);
             long t3_milli = ((((long) bRecvBuf[44] & 0xFFL) << 24) + (((long) bRecvBuf[45] & 0xFFL) << 16) + (((long) bRecvBuf[46] & 0xFFL) << 8) + ((long) bRecvBuf[47] & 0xFFL)) * 1000L / 0x100000000L;
             long t3 = t3_second * 1000 + t3_milli;
-            System.out.println("t1:" + t1);
-            System.out.println("t2:" + t2);
-            System.out.println("t3:" + t3);
-            System.out.println("t4:" + t4);
 
             long offset = ((t2 - t1) + (t3 - t4)) / 2;//毫秒为单位
             long now = System.currentTimeMillis();

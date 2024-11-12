@@ -96,7 +96,7 @@ public class TimeServiceClient_GUI_Refactored extends javax.swing.JFrame impleme
                     m_iNumResponsesReceived++;
 //                    jTextField_UNIX_Time.setText(Long.toString(NTP_Timestamp.lUnixTime));
                     jTextField_UNIX_Time.setText(Long.toString(NTP_Timestamp.lUninTimeMIlli));//毫秒版
-                    String sUTC_Time = String.format("%02d:%02d:%02d:%02d", NTP_Timestamp.lHour, NTP_Timestamp.lMinute, NTP_Timestamp.lSecond, NTP_Timestamp.lMilliSecond);
+                    String sUTC_Time = String.format("%02d:%02d:%02d.%03d", NTP_Timestamp.lHour, NTP_Timestamp.lMinute, NTP_Timestamp.lSecond, NTP_Timestamp.lMilliSecond);
                     jTextField_UTC_Time.setText(sUTC_Time);
                     UpdateStatisticsDisplay();
                     break;
